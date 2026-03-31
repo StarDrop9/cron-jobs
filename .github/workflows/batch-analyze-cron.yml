@@ -1,0 +1,17 @@
+name: Batch Analyze Tasks
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # every 5 minutes
+  workflow_dispatch:        # manual trigger button in GitHub UI
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run batch-analyze
+        run: |
+          curl -sf -X POST "https://vjlsmljcceseeywepjoo.supabase.co/functions/v1/batch-analyze" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -d '{"limit": 25}'
