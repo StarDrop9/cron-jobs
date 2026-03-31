@@ -1,0 +1,16 @@
+name: Lighthouse Digest Email
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # daily at 9am UTC (1hr after audit completes)
+  workflow_dispatch:
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send digest email
+        run: |
+          curl -sf -X POST "https://vjlsmljcceseeywepjoo.supabase.co/functions/v1/lighthouse-digest" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
