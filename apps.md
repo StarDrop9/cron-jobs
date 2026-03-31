@@ -17,6 +17,7 @@ Tasks auto-created in Taskmaster when scores drop below threshold.
 | kpssite | https://kpsdev.org | ✅ Active |
 | HITL-v2 | https://hitl-v2.vercel.app | ✅ Active |
 | VideoAnalyst | https://videoanalyst-nine.vercel.app | ✅ Active |
+| WisdomAlign | https://wisdom-align.vercel.app | ✅ Active |
 
 ## Pending / Not Yet Deployed
 | App | Notes |
