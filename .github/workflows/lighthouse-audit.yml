@@ -8,7 +8,12 @@ on:
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Run Lighthouse
         id: lh
         uses: treosh/lighthouse-ci-action@v11
@@ -24,31 +29,31 @@ jobs:
           uploadArtifacts: false
           temporaryPublicStorage: false
 
-      - name: Report failing scores to Taskmaster
+      - name: Report failing scores + update apps.md
         env:
           SUPABASE_URL: https://vjlsmljcceseeywepjoo.supabase.co
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           LH_RESULTS: ${{ steps.lh.outputs.manifest }}
           THRESHOLD: 95
         run: |
-          echo "$LH_RESULTS" | python3 - <<'PYEOF'
-          import os, json, subprocess, sys
+          python3 <<'PYEOF'
+          import os, json, subprocess, sys, re
           from urllib.parse import urlparse
+          from datetime import datetime, timezone
 
-          threshold = int(os.environ.get("THRESHOLD", "95"))
+          threshold    = int(os.environ.get("THRESHOLD", "95"))
           supabase_url = os.environ.get("SUPABASE_URL")
           key          = os.environ.get("SUPABASE_ANON_KEY")
           raw          = os.environ.get("LH_RESULTS", "[]")
 
-          # Map hostname → friendly app name
           APP_NAMES = {
-              "todo-scribe-master.vercel.app": "Taskmaster",
-              "asipro.vercel.app":             "ASIPro",
+              "todo-scribe-master.vercel.app":      "Taskmaster",
+              "asipro.vercel.app":                  "ASIPro",
               "dental-booking-app-iota.vercel.app": "DentalBookingApp",
-              "aworldmonitor.vercel.app":      "GlobalMonitor",
-              "health-wellness-theta.vercel.app": "HealthWellnes",
-              "kpsdev.org":                    "kpssite",
-              "hitl-v2.vercel.app":            "HITL-v2",
+              "aworldmonitor.vercel.app":            "GlobalMonitor",
+              "health-wellness-theta.vercel.app":    "HealthWellnes",
+              "kpsdev.org":                          "kpssite",
+              "hitl-v2.vercel.app":                  "HITL-v2",
           }
 
           try:
@@ -64,11 +69,14 @@ jobs:
               "seo":            "SEO",
           }
 
+          scores_by_app = {}
+
           for entry in manifest:
               summary  = entry.get("summary", {})
               page     = entry.get("url", "unknown page")
               hostname = urlparse(page).hostname or page
               app_name = APP_NAMES.get(hostname, hostname)
+              scores_by_app[app_name] = {}
 
               print(f"\n── {app_name} ({page})")
 
@@ -77,6 +85,8 @@ jobs:
                   if raw_score is None:
                       continue
                   score = round(float(raw_score) * 100)
+                  scores_by_app[app_name][label] = score
+
                   if score < threshold:
                       title = f"[Lighthouse] {app_name} — {label} {score}/100"
                       desc  = (
@@ -88,12 +98,7 @@ jobs:
                           f"Fix: review Lighthouse report and address flagged issues."
                       )
                       priority = 80 if score < 80 else 60
-
-                      payload = json.dumps({
-                          "title": title,
-                          "description": desc,
-                          "priority": priority,
-                      })
+                      payload  = json.dumps({"title": title, "description": desc, "priority": priority})
 
                       result = subprocess.run([
                           "curl", "-sf", "-X", "POST",
@@ -104,7 +109,53 @@ jobs:
                       ], capture_output=True, text=True)
 
                       status = "task created" if result.returncode == 0 else f"FAILED: {result.stderr}"
-                      print(f"  {label}: {score} → {status}")
+                      print(f"  {label}: {score} ❌ → {status}")
                   else:
                       print(f"  {label}: {score} ✓")
+
+          # ── Update apps.md scores table ──────────────────────────────────
+          run_date = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+          def fmt(app, cat):
+              s = scores_by_app.get(app, {}).get(cat)
+              if s is None: return "—"
+              return f"{s} ✓" if s >= threshold else f"{s} ❌"
+
+          rows = []
+          for app in ["Taskmaster","ASIPro","DentalBookingApp","GlobalMonitor","HealthWellnes","kpssite","HITL-v2"]:
+              p  = fmt(app, "Performance")
+              a  = fmt(app, "Accessibility")
+              bp = fmt(app, "Best Practices")
+              s  = fmt(app, "SEO")
+              rows.append(f"| {app} | {p} | {a} | {bp} | {s} |")
+
+          new_table = "\n".join([
+              f"## Last Known Scores ({run_date})",
+              "",
+              "| App | Performance | Accessibility | Best Practices | SEO |",
+              "|---|---|---|---|---|",
+          ] + rows)
+
+          with open("apps.md", "r") as f:
+              content = f.read()
+
+          content = re.sub(
+              r"## Last Known Scores.*?(?=\n---|\Z)",
+              new_table + "\n",
+              content,
+              flags=re.DOTALL,
+          )
+
+          with open("apps.md", "w") as f:
+              f.write(content)
+
+          print("\n✅ apps.md updated")
           PYEOF
+
+      - name: Commit updated apps.md
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add apps.md
+          git diff --cached --quiet || git commit -m "chore: update Lighthouse scores $(date -u +%Y-%m-%d)"
+          git push
