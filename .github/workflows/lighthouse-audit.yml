@@ -26,6 +26,7 @@ jobs:
             https://health-wellness-theta.vercel.app
             https://kpsdev.org
             https://hitl-v2.vercel.app
+            https://videoanalyst-nine.vercel.app
           uploadArtifacts: false
           temporaryPublicStorage: false
 
@@ -54,6 +55,7 @@ jobs:
               "health-wellness-theta.vercel.app":    "HealthWellnes",
               "kpsdev.org":                          "kpssite",
               "hitl-v2.vercel.app":                  "HITL-v2",
+              "videoanalyst-nine.vercel.app":        "VideoAnalyst",
           }
 
           try:
@@ -122,7 +124,7 @@ jobs:
               return f"{s} ✓" if s >= threshold else f"{s} ❌"
 
           rows = []
-          for app in ["Taskmaster","ASIPro","DentalBookingApp","GlobalMonitor","HealthWellnes","kpssite","HITL-v2"]:
+          for app in ["Taskmaster","ASIPro","DentalBookingApp","GlobalMonitor","HealthWellnes","kpssite","HITL-v2","VideoAnalyst"]:
               p  = fmt(app, "Performance")
               a  = fmt(app, "Accessibility")
               bp = fmt(app, "Best Practices")

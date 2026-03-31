@@ -16,6 +16,7 @@ Tasks auto-created in Taskmaster when scores drop below threshold.
 | HealthWellnes | https://health-wellness-theta.vercel.app | ✅ Active |
 | kpssite | https://kpsdev.org | ✅ Active |
 | HITL-v2 | https://hitl-v2.vercel.app | ✅ Active |
+| VideoAnalyst | https://videoanalyst-nine.vercel.app | ✅ Active |
 
 ## Pending / Not Yet Deployed
 | App | Notes |
