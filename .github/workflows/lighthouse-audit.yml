@@ -1,0 +1,86 @@
+name: Lighthouse Audit — Taskmaster
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # daily at 8am UTC
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Lighthouse
+        id: lh
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            https://todo-scribe-master.vercel.app
+          uploadArtifacts: false
+          temporaryPublicStorage: false
+
+      - name: Report failing scores to Taskmaster
+        env:
+          SUPABASE_URL: https://vjlsmljcceseeywepjoo.supabase.co
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          LH_RESULTS: ${{ steps.lh.outputs.manifest }}
+          THRESHOLD: 95
+        run: |
+          echo "$LH_RESULTS" | python3 - <<'PYEOF'
+          import os, json, subprocess, sys
+
+          threshold = int(os.environ.get("THRESHOLD", "95"))
+          url       = os.environ.get("SUPABASE_URL")
+          key       = os.environ.get("SUPABASE_ANON_KEY")
+          raw       = os.environ.get("LH_RESULTS", "[]")
+
+          try:
+              manifest = json.loads(raw)
+          except Exception as e:
+              print(f"Could not parse LH_RESULTS: {e}")
+              sys.exit(0)
+
+          categories = {
+              "performance":   "Performance",
+              "accessibility": "Accessibility",
+              "best-practices": "Best Practices",
+              "seo":           "SEO",
+          }
+
+          for entry in manifest:
+              summary = entry.get("summary", {})
+              page    = entry.get("url", "unknown page")
+
+              for key_name, label in categories.items():
+                  raw_score = summary.get(key_name)
+                  if raw_score is None:
+                      continue
+                  score = round(float(raw_score) * 100)
+                  if score < threshold:
+                      title = f"[Lighthouse] {label} score {score}/100 on Taskmaster"
+                      desc  = (
+                          f"Lighthouse audit failed threshold ({threshold}).\n"
+                          f"Category: {label}\n"
+                          f"Score: {score}/100\n"
+                          f"Page: {page}\n"
+                          f"Fix: review Lighthouse report and address flagged issues."
+                      )
+                      priority = 80 if score < 80 else 60
+
+                      payload = json.dumps({
+                          "title": title,
+                          "description": desc,
+                          "priority": priority,
+                      })
+
+                      result = subprocess.run([
+                          "curl", "-sf", "-X", "POST",
+                          f"{url}/functions/v1/create-task",
+                          "-H", "Content-Type: application/json",
+                          "-H", f"Authorization: Bearer {key}",
+                          "-d", payload,
+                      ], capture_output=True, text=True)
+
+                      print(f"{label}: {score} → {'task created' if result.returncode == 0 else 'failed: ' + result.stderr}")
+                  else:
+                      print(f"{label}: {score} ✓")
+          PYEOF
