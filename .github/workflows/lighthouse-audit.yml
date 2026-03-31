@@ -1,4 +1,4 @@
-name: Lighthouse Audit — Taskmaster
+name: Lighthouse Audit — All Apps
 
 on:
   schedule:
@@ -15,6 +15,12 @@ jobs:
         with:
           urls: |
             https://todo-scribe-master.vercel.app
+            https://asipro.vercel.app
+            https://dental-booking-app-iota.vercel.app
+            https://aworldmonitor.vercel.app
+            https://health-wellness-theta.vercel.app
+            https://kpsdev.org
+            https://www.hitl.org
           uploadArtifacts: false
           temporaryPublicStorage: false
 
@@ -27,11 +33,23 @@ jobs:
         run: |
           echo "$LH_RESULTS" | python3 - <<'PYEOF'
           import os, json, subprocess, sys
+          from urllib.parse import urlparse
 
           threshold = int(os.environ.get("THRESHOLD", "95"))
-          url       = os.environ.get("SUPABASE_URL")
-          key       = os.environ.get("SUPABASE_ANON_KEY")
-          raw       = os.environ.get("LH_RESULTS", "[]")
+          supabase_url = os.environ.get("SUPABASE_URL")
+          key          = os.environ.get("SUPABASE_ANON_KEY")
+          raw          = os.environ.get("LH_RESULTS", "[]")
+
+          # Map hostname → friendly app name
+          APP_NAMES = {
+              "todo-scribe-master.vercel.app": "Taskmaster",
+              "asipro.vercel.app":             "ASIPro",
+              "dental-booking-app-iota.vercel.app": "DentalBookingApp",
+              "aworldmonitor.vercel.app":      "GlobalMonitor",
+              "health-wellness-theta.vercel.app": "HealthWellnes",
+              "kpsdev.org":                    "kpssite",
+              "www.hitl.org":                  "HITL-v2",
+          }
 
           try:
               manifest = json.loads(raw)
@@ -40,15 +58,19 @@ jobs:
               sys.exit(0)
 
           categories = {
-              "performance":   "Performance",
-              "accessibility": "Accessibility",
+              "performance":    "Performance",
+              "accessibility":  "Accessibility",
               "best-practices": "Best Practices",
-              "seo":           "SEO",
+              "seo":            "SEO",
           }
 
           for entry in manifest:
-              summary = entry.get("summary", {})
-              page    = entry.get("url", "unknown page")
+              summary  = entry.get("summary", {})
+              page     = entry.get("url", "unknown page")
+              hostname = urlparse(page).hostname or page
+              app_name = APP_NAMES.get(hostname, hostname)
+
+              print(f"\n── {app_name} ({page})")
 
               for key_name, label in categories.items():
                   raw_score = summary.get(key_name)
@@ -56,9 +78,10 @@ jobs:
                       continue
                   score = round(float(raw_score) * 100)
                   if score < threshold:
-                      title = f"[Lighthouse] {label} score {score}/100 on Taskmaster"
+                      title = f"[Lighthouse] {app_name} — {label} {score}/100"
                       desc  = (
                           f"Lighthouse audit failed threshold ({threshold}).\n"
+                          f"App: {app_name}\n"
                           f"Category: {label}\n"
                           f"Score: {score}/100\n"
                           f"Page: {page}\n"
@@ -74,13 +97,14 @@ jobs:
 
                       result = subprocess.run([
                           "curl", "-sf", "-X", "POST",
-                          f"{url}/functions/v1/create-task",
+                          f"{supabase_url}/functions/v1/create-task",
                           "-H", "Content-Type: application/json",
                           "-H", f"Authorization: Bearer {key}",
                           "-d", payload,
                       ], capture_output=True, text=True)
 
-                      print(f"{label}: {score} → {'task created' if result.returncode == 0 else 'failed: ' + result.stderr}")
+                      status = "task created" if result.returncode == 0 else f"FAILED: {result.stderr}"
+                      print(f"  {label}: {score} → {status}")
                   else:
-                      print(f"{label}: {score} ✓")
+                      print(f"  {label}: {score} ✓")
           PYEOF
