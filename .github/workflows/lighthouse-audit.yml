@@ -20,7 +20,7 @@ jobs:
             https://aworldmonitor.vercel.app
             https://health-wellness-theta.vercel.app
             https://kpsdev.org
-            https://www.hitl.org
+            https://hitl-v2.vercel.app
           uploadArtifacts: false
           temporaryPublicStorage: false
 
@@ -48,7 +48,7 @@ jobs:
               "aworldmonitor.vercel.app":      "GlobalMonitor",
               "health-wellness-theta.vercel.app": "HealthWellnes",
               "kpsdev.org":                    "kpssite",
-              "www.hitl.org":                  "HITL-v2",
+              "hitl-v2.vercel.app":            "HITL-v2",
           }
 
           try:
