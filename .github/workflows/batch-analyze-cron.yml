@@ -14,4 +14,4 @@ jobs:
           curl -sf -X POST "https://vjlsmljcceseeywepjoo.supabase.co/functions/v1/batch-analyze" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -d '{"limit": 10}'
+            -d '{"limit": 5}'
