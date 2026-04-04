@@ -29,19 +29,19 @@ Tasks auto-created in Taskmaster when scores drop below threshold.
 
 ---
 
-## Last Known Scores (2026-04-03 08:17 UTC)
+## Last Known Scores (2026-04-04 08:12 UTC)
 
 | App | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
 | Taskmaster | 98 ✓ | 95 ✓ | 100 ✓ | 96 ✓ |
-| ASIPro | 99 ✓ | 100 ✓ | 100 ✓ | 83 ❌ |
+| ASIPro | 100 ✓ | 100 ✓ | 100 ✓ | 83 ❌ |
 | DentalBookingApp | 95 ✓ | 91 ❌ | 96 ✓ | 100 ✓ |
 | GlobalMonitor | 25 ❌ | 95 ✓ | 96 ✓ | 90 ❌ |
 | HealthWellnes | 97 ✓ | 93 ❌ | 96 ✓ | 100 ✓ |
-| kpssite | 88 ❌ | 100 ✓ | 100 ✓ | 100 ✓ |
-| HITL-v2 | 99 ✓ | 90 ❌ | 100 ✓ | 100 ✓ |
-| VideoAnalyst | 98 ✓ | 94 ❌ | 100 ✓ | 100 ✓ |
-| WisdomAlign | 83 ❌ | 95 ✓ | 100 ✓ | 100 ✓ |
+| kpssite | 85 ❌ | 100 ✓ | 100 ✓ | 100 ✓ |
+| HITL-v2 | 100 ✓ | 96 ✓ | 100 ✓ | 100 ✓ |
+| VideoAnalyst | 99 ✓ | 94 ❌ | 100 ✓ | 100 ✓ |
+| WisdomAlign | 84 ❌ | 100 ✓ | 100 ✓ | 100 ✓ |
 
 ---
 
