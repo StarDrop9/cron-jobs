@@ -7,17 +7,18 @@ Tasks auto-created in Taskmaster when scores drop below threshold.
 
 ## Apps
 
-| App | URL | Status |
-|---|---|---|
-| Taskmaster | https://todo-scribe-master.vercel.app | ✅ Active |
-| ASIPro | https://asipro.vercel.app | ✅ Active |
-| DentalBookingApp | https://dental-booking-app-iota.vercel.app | ✅ Active |
-| GlobalMonitor | https://aworldmonitor.vercel.app | ✅ Active |
-| HealthWellnes | https://health-wellness-theta.vercel.app | ✅ Active |
-| kpssite | https://kpsdev.org | ✅ Active |
-| HITL-v2 | https://hitl-v2.vercel.app | ✅ Active |
-| VideoAnalyst | https://videoanalyst-nine.vercel.app | ✅ Active |
-| WisdomAlign | https://wisdom-align.vercel.app | ✅ Active |
+<!-- Repo column: verify these match your actual GitHub repo names under StarDrop9/ -->
+| App | URL | Repo | Status |
+|---|---|---|---|
+| Taskmaster | https://todo-scribe-master.vercel.app | StarDrop9/todo-scribe-master | ✅ Active |
+| ASIPro | https://asipro.vercel.app | StarDrop9/asipro | ✅ Active |
+| DentalBookingApp | https://dental-booking-app-iota.vercel.app | StarDrop9/DentalBookingApp | ✅ Active |
+| GlobalMonitor | https://aworldmonitor.vercel.app | StarDrop9/GlobalMonitor | ✅ Active |
+| HealthWellnes | https://health-wellness-theta.vercel.app | StarDrop9/HealthWellness | ✅ Active |
+| kpssite | https://kpsdev.org | StarDrop9/kpssite | ✅ Active |
+| HITL-v2 | https://hitl-v2.vercel.app | StarDrop9/hitl-v2 | ✅ Active |
+| VideoAnalyst | https://videoanalyst-nine.vercel.app | StarDrop9/VideoAnalyzer | ✅ Active |
+| WisdomAlign | https://wisdom-align.vercel.app | StarDrop9/WisdomAlign | ✅ Active |
 
 ## Pending / Not Yet Deployed
 | App | Notes |

@@ -1,0 +1,47 @@
+name: Lighthouse Karpathy Loop
+
+# Runs after the daily audit (08:00) and digest (09:00) have completed.
+# Picks the worst-scoring app and generates + opens a fix PR automatically.
+# Model: Qwen3-235B-A22B:free (OpenRouter) — $0.00/run
+# Fallbacks: Qwen2.5-Coder-32B:free, DeepSeek-R1:free
+
+on:
+  schedule:
+    - cron: '0 10 * * *'   # daily at 10:00 UTC (after audit + digest)
+  workflow_dispatch:
+    inputs:
+      app:
+        description: 'App name to fix (leave blank for worst-scoring app)'
+        required: false
+        default: ''
+
+jobs:
+  karpathy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout cron-jobs repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Configure Git identity
+        run: |
+          git config --global user.name  "karpathy-bot"
+          git config --global user.email "bot@kpsdev.org"
+
+      - name: Run Karpathy loop
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GH_PAT:             ${{ secrets.GH_PAT }}
+          SUPABASE_URL:       https://vjlsmljcceseeywepjoo.supabase.co
+          SUPABASE_ANON_KEY:  ${{ secrets.SUPABASE_ANON_KEY }}
+          TARGET_APP:         ${{ inputs.app }}
+        run: python scripts/karpathy_lh.py
+
+      # If the script exits 0 but no PR was created (all apps passing), that's fine.
+      # If it exits non-zero, the run is marked failed — check logs.
