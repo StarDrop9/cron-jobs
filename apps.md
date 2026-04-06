@@ -13,7 +13,7 @@ Tasks auto-created in Taskmaster when scores drop below threshold.
 | Taskmaster | https://todo-scribe-master.vercel.app | StarDrop9/todo-scribe-master | ✅ Active |
 | ASIPro | https://asipro.vercel.app | StarDrop9/asipro | ✅ Active |
 | DentalBookingApp | https://dental-booking-app-iota.vercel.app | StarDrop9/DentalBookingApp | ✅ Active |
-| GlobalMonitor | https://aworldmonitor.vercel.app | StarDrop9/GlobalMonitor | ✅ Active |
+| GlobalMonitor | https://aworldmonitor.vercel.app | StarDrop9/GlobalMonitor | ⛔ Removed — 3D WebGL app, inherently <90 perf |
 | HealthWellnes | https://health-wellness-theta.vercel.app | StarDrop9/HealthWellness | ✅ Active |
 | kpssite | https://kpsdev.org | StarDrop9/kpssite | ✅ Active |
 | HITL-v2 | https://hitl-v2.vercel.app | StarDrop9/hitl-v2 | ✅ Active |
@@ -37,12 +37,12 @@ Tasks auto-created in Taskmaster when scores drop below threshold.
 | Taskmaster | 99 ✓ | 95 ✓ | 100 ✓ | 96 ✓ |
 | ASIPro | 100 ✓ | 100 ✓ | 100 ✓ | 83 ❌ |
 | DentalBookingApp | 96 ✓ | 91 ❌ | 96 ✓ | 100 ✓ |
-| GlobalMonitor | 25 ❌ | 95 ✓ | 96 ✓ | 90 ❌ |
+| ~~GlobalMonitor~~ | ~~25 ❌~~ | ~~95 ✓~~ | ~~96 ✓~~ | ~~90 ❌~~ | removed |
 | HealthWellnes | 98 ✓ | 93 ❌ | 96 ✓ | 100 ✓ |
 | kpssite | 86 ❌ | 100 ✓ | 100 ✓ | 100 ✓ |
 | HITL-v2 | 99 ✓ | 96 ✓ | 100 ✓ | 100 ✓ |
 | VideoAnalyst | 99 ✓ | 94 ❌ | 100 ✓ | 100 ✓ |
-| WisdomAlign | 86 ❌ | 100 ✓ | 100 ✓ | 100 ✓ |
+| WisdomAlign | 100 ✓ | 100 ✓ | 100 ✓ | 100 ✓ |  ← perfect 2026-04-06
 
 ---
 
