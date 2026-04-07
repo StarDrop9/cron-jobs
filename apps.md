@@ -30,19 +30,19 @@ Tasks auto-created in Taskmaster when scores drop below threshold.
 
 ---
 
-## Last Known Scores (2026-04-07 08:25 UTC)
+## Last Known Scores (2026-04-07 17:32 UTC)
 
-| App | Performance | Accessibility | Best Practices | SEO |
-|---|---|---|---|---|
-| Taskmaster | 95 ✓ | 95 ✓ | 100 ✓ | 96 ✓ |
-| ASIPro | 87 ❌ | 100 ✓ | 78 ❌ | 100 ✓ |
-| DentalBookingApp | 94 ❌ | 91 ❌ | 96 ✓ | 100 ✓ |
-| GlobalMonitor | 25 ❌ | 95 ✓ | 96 ✓ | 90 ❌ |
-| HealthWellnes | 96 ✓ | 93 ❌ | 96 ✓ | 100 ✓ |
-| kpssite | 88 ❌ | 100 ✓ | 100 ✓ | 100 ✓ |
-| HITL-v2 | 100 ✓ | 96 ✓ | 100 ✓ | 100 ✓ |
-| VideoAnalyst | 99 ✓ | 94 ❌ | 100 ✓ | 100 ✓ |
-| WisdomAlign | 93 ❌ | 100 ✓ | 100 ✓ | 100 ✓ |
+| App | Date/Time | Performance | Accessibility | Best Practices | SEO |
+|---|---|---|---|---|---|
+| Taskmaster | 2026-04-07 17:32 UTC | 96 | 95 | 100 | 96 |
+| ASIPro | 2026-04-07 17:32 UTC | 74 ❌ | 100 | 78 ❌ | 100 |
+| DentalBookingApp | 2026-04-07 17:32 UTC | 94 ❌ | 91 ❌ | 96 | 100 |
+| GlobalMonitor | 2026-04-07 17:32 UTC | 25 ❌ | 95 | 96 | 90 ❌ |
+| HealthWellnes | 2026-04-07 17:32 UTC | 96 | 93 ❌ | 96 | 100 |
+| kpssite | 2026-04-07 17:32 UTC | 80 ❌ | 100 | 100 | 100 |
+| HITL-v2 | 2026-04-07 17:32 UTC | 99 | 96 | 100 | 100 |
+| VideoAnalyst | 2026-04-07 17:32 UTC | 98 | 94 ❌ | 100 | 100 |
+| WisdomAlign | 2026-04-07 17:32 UTC | 89 ❌ | 100 | 100 | 100 |
 
 ---
 
