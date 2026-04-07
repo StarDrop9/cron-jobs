@@ -123,7 +123,7 @@ jobs:
           def fmt(app, cat):
               s = scores_by_app.get(app, {}).get(cat)
               if s is None: return "—"
-              return f"{s} ✓" if s >= threshold else f"{s} ❌"
+              return f"{s} ❌" if s < threshold else str(s)
 
           rows = []
           for app in ["Taskmaster","ASIPro","DentalBookingApp","GlobalMonitor","HealthWellnes","kpssite","HITL-v2","VideoAnalyst","WisdomAlign"]:
@@ -131,13 +131,13 @@ jobs:
               a  = fmt(app, "Accessibility")
               bp = fmt(app, "Best Practices")
               s  = fmt(app, "SEO")
-              rows.append(f"| {app} | {p} | {a} | {bp} | {s} |")
+              rows.append(f"| {app} | {run_date} | {p} | {a} | {bp} | {s} |")
 
           new_table = "\n".join([
               f"## Last Known Scores ({run_date})",
               "",
-              "| App | Performance | Accessibility | Best Practices | SEO |",
-              "|---|---|---|---|---|",
+              "| App | Date/Time | Performance | Accessibility | Best Practices | SEO |",
+              "|---|---|---|---|---|---|",
           ] + rows)
 
           with open("apps.md", "r") as f:
@@ -159,8 +159,8 @@ jobs:
           history_block = "\n".join([
               f"## {run_date}",
               "",
-              "| App | Performance | Accessibility | Best Practices | SEO |",
-              "|---|---|---|---|---|",
+              "| App | Date/Time | Performance | Accessibility | Best Practices | SEO |",
+              "|---|---|---|---|---|---|",
           ] + rows + ["", "---", ""])
 
           with open("scores-history.md", "a") as f:
