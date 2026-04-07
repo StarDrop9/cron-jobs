@@ -22,7 +22,6 @@ jobs:
             https://todo-scribe-master.vercel.app
             https://asipro.vercel.app
             https://dental-booking-app-iota.vercel.app
-            https://aworldmonitor.vercel.app
             https://health-wellness-theta.vercel.app
             https://kpsdev.org
             https://hitl-v2.vercel.app
@@ -52,7 +51,6 @@ jobs:
               "todo-scribe-master.vercel.app":      "Taskmaster",
               "asipro.vercel.app":                  "ASIPro",
               "dental-booking-app-iota.vercel.app": "DentalBookingApp",
-              "aworldmonitor.vercel.app":            "GlobalMonitor",
               "health-wellness-theta.vercel.app":    "HealthWellnes",
               "kpsdev.org":                          "kpssite",
               "hitl-v2.vercel.app":                  "HITL-v2",
@@ -126,7 +124,7 @@ jobs:
               return f"{s} ❌" if s < threshold else str(s)
 
           rows = []
-          for app in ["Taskmaster","ASIPro","DentalBookingApp","GlobalMonitor","HealthWellnes","kpssite","HITL-v2","VideoAnalyst","WisdomAlign"]:
+          for app in ["Taskmaster","ASIPro","DentalBookingApp","HealthWellnes","kpssite","HITL-v2","VideoAnalyst","WisdomAlign"]:
               p  = fmt(app, "Performance")
               a  = fmt(app, "Accessibility")
               bp = fmt(app, "Best Practices")
